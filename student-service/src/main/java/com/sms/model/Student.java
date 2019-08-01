@@ -40,6 +40,11 @@ import com.sms.model.audit.DateAudit;
 @SequenceGenerator(name="seq", initialValue=2000, allocationSize=100)
 public class Student extends DateAudit {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -83,15 +88,14 @@ public class Student extends DateAudit {
 		
 	}
 
-	public Student(String firstName, String lastName, Date doa, Long registrationNo, 
-			Set<AcademicSession> academicSessions, boolean enabled, @Size(max = 40) @Email String studentEmail,
+	public Student(String firstName, String lastName, Date doa, String registrationNo, 
+			Set<AcademicSession> academicSessions,@Size(max = 40) @Email String studentEmail,
 			@NotBlank @Size(max = 40) @Email String parentEmail, @NotBlank @Size(max = 100) String uuid) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.doa = doa;
 		this.academicSessions = academicSessions;
-		this.enabled = enabled;
 		this.studentEmail = studentEmail;
 		this.parentEmail = parentEmail;
 		this.uuid = uuid;

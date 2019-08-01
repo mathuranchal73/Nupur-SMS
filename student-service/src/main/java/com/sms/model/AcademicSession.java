@@ -19,13 +19,12 @@ public class AcademicSession {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String Session;
-	
-	
 	@Enumerated(EnumType.STRING)
 	@NaturalId
 	@Column(length = 60)
-	private Status status;
+	private Session session;
+	
+	private Boolean status;
 	
 
 }

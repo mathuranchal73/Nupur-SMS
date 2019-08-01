@@ -98,7 +98,7 @@ public class StudentServiceImpl implements IStudentService {
 	 }
 	 
 	 
-	  String generateRegistrationNo() {
+	  public static String generateRegistrationNo() {
 		 
 		 Random generator= new Random();
 		 //generator.setSeed(System.currentTimeMillis());
