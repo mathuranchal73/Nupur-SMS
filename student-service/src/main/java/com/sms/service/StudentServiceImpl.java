@@ -13,9 +13,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.DoubleStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -30,17 +34,25 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
 import com.sms.model.Student;
+import com.sms.payload.ApiResponse;
+import com.sms.payload.CreateStudentRequest;
 import com.sms.payload.UploadBulkFileResponse;
 import com.sms.repository.StudentRepository;
+import com.sms.controller.StudentController;
+import com.sms.exception.ResourceNotFoundException;
+
 
 @Service
 public class StudentServiceImpl implements IStudentService {
+	
+	 private static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 	
 	 	@Autowired
 	    private EurekaClient eurekaClient;
@@ -56,7 +68,49 @@ public class StudentServiceImpl implements IStudentService {
 	    
 	    @Autowired
 		 ObjectMapper objectMapper;
+	    
+	 public Student getStudentById(Long studentId) {
+	        return studentRepository.findById(studentId).orElseThrow(
+	                () -> new ResourceNotFoundException("Student", "id", studentId));
+	 }
 
+	 public Student getStudentByFirstName(String firstName) {
+	        return studentRepository.findByFirstName(firstName).orElseThrow(
+	                () -> new ResourceNotFoundException("Student", "firstName", firstName));
+	 }
+	 
+	 public ResponseEntity createStudent(CreateStudentRequest createStudentRequest) {
+		 
+		 Student student= new Student(createStudentRequest.getFirstName(),createStudentRequest.getLastName(),createStudentRequest.getDateOfAdmission(),createStudentRequest.getAcademicSessions(),createStudentRequest.getStudentEmail(),createStudentRequest.getParentEmail(),UUID.randomUUID().toString());
+		 student.setRegistrationNo(generateRegistrationNo());
+		 student.setRollNo(generateRollNo());
+		 if(studentRepository.existsByregistrationNo(student.getRegistrationNo())) {
+	            return new ResponseEntity(new ApiResponse(false, "Duplicate Registration Number!"),
+	                    HttpStatus.BAD_REQUEST);
+	        }
+		 if(studentRepository.existsBystudentEmail(student.getStudentEmail())) {
+	            return new ResponseEntity(new ApiResponse(false, "Student Email Address already in use!"),
+	                    HttpStatus.BAD_REQUEST);
+	        }
+		 try {
+	        	
+	        	Student result = studentRepository.save(student);
+	        	
+	        	
+				URI location = ServletUriComponentsBuilder
+		                .fromCurrentContextPath().path("/v1/student/{id}")
+		                .buildAndExpand(result.getId()).toUri();
+				
+				 return ResponseEntity.created(location).body(new ApiResponse(true, "Student created successfully"+location));
+			} catch (Exception e) 
+	        {
+				logger.error("Exception raised registerUser REST Call {0}", e);
+				e.printStackTrace();
+				return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+			}      
+	        
+	 }
+	 
 	 public List<Student> readStudentsFromCSV(MultipartFile File) throws IOException
 	 {
 		 MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
@@ -98,7 +152,7 @@ public class StudentServiceImpl implements IStudentService {
 	 }
 	 
 	 
-	  public static String generateRegistrationNo() {
+	  public String generateRegistrationNo() {
 		 
 		 Random generator= new Random();
 		 //generator.setSeed(System.currentTimeMillis());
@@ -113,6 +167,13 @@ public class StudentServiceImpl implements IStudentService {
 				 
 		 return registrationNo;
 	 }
+	  
+	  
+	  		public Long generateRollNo() {
+			 
+			 Random generator= new Random();					 
+			 return  generator.nextLong();
+		 }
 
 
 	public FileSystemResource getUserFileResource(MultipartFile File) throws IOException {

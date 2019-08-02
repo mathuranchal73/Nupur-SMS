@@ -53,16 +53,14 @@ public class Student extends DateAudit {
 	
 	private String lastName;
 	
-	private Date doa;
+	private String doa;
 	
 	private String registrationNo;
 	
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
 	private Long rollNo;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name="student_academic_session",joinColumns=@JoinColumn(name="student_id"),inverseJoinColumns=@JoinColumn(name="academic_session_id"))
-	private Set<AcademicSession> academicSessions= new HashSet<>();
+	private String academicSessions;
 	
 	private boolean enabled;
 	
@@ -88,8 +86,8 @@ public class Student extends DateAudit {
 		
 	}
 
-	public Student(String firstName, String lastName, Date doa, String registrationNo, 
-			Set<AcademicSession> academicSessions,@Size(max = 40) @Email String studentEmail,
+	public Student(String firstName, String lastName, String doa, 
+			String academicSessions,@Size(max = 40) @Email String studentEmail,
 			@NotBlank @Size(max = 40) @Email String parentEmail, @NotBlank @Size(max = 100) String uuid) {
 		super();
 		this.firstName = firstName;
@@ -136,11 +134,11 @@ public class Student extends DateAudit {
 		this.lastName = lastName;
 	}
 
-	public Date getDoa() {
+	public String getDoa() {
 		return doa;
 	}
 
-	public void setDoa(Date doa) {
+	public void setDoa(String doa) {
 		this.doa = doa;
 	}
 
@@ -160,11 +158,11 @@ public class Student extends DateAudit {
 		this.rollNo = rollNo;
 	}
 
-	public Set<AcademicSession> getAcademicSessions() {
+	public String getAcademicSessions() {
 		return academicSessions;
 	}
 
-	public void setAcademicSessions(Set<AcademicSession> academicSessions) {
+	public void setAcademicSessions(String academicSessions) {
 		this.academicSessions = academicSessions;
 	}
 

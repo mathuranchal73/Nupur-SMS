@@ -12,9 +12,9 @@ public class CreateStudentRequest {
 	
 	private String lastName;
 	
-	private Date dateOfAdmission;
+	private String dateOfAdmission;
 	
-	private Set<AcademicSession> academicSessions= new HashSet<>();
+	private String academicSessions;
 	
 	 private String studentEmail;
 	
@@ -38,19 +38,19 @@ public class CreateStudentRequest {
 		this.lastName = lastName;
 	}
 
-	public Date getDateOfAdmission() {
+	public String getDateOfAdmission() {
 		return dateOfAdmission;
 	}
 
-	public void setDateOfAdmission(Date dateOfAdmission) {
+	public void setDateOfAdmission(String dateOfAdmission) {
 		this.dateOfAdmission = dateOfAdmission;
 	}
 
-	public Set<AcademicSession> getAcademicSessions() {
+	public String getAcademicSessions() {
 		return academicSessions;
 	}
 
-	public void setAcademicSessions(Set<AcademicSession> academicSessions) {
+	public void setAcademicSessions(String academicSessions) {
 		this.academicSessions = academicSessions;
 	}
 

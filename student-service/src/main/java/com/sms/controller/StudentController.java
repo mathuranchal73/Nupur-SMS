@@ -68,6 +68,16 @@ public class StudentController {
 
 	        return studentRepository.findAll();
 	    }
+	 @GetMapping("/{studentId}")
+	 public Student getStudentById(@PathVariable Long studentId) {
+		 	return studentService.getStudentById(studentId);
+	 	}
+	 
+	 @GetMapping("/{firstName}")
+	 public Student getStudentByFirstName(@PathVariable String firstName) {
+		 	return studentService.getStudentByFirstName(firstName);
+	 	}
+	 
 	 	
 	 @PostMapping("/bulkUpload")
 		@ApiOperation(value="Upload the file", notes="Uploads a Multipart File and returns the download URI",produces = "application/json", nickname="uploadFile")
@@ -82,53 +92,15 @@ public class StudentController {
 		}
 		 	
 		}
-	
-	   
-	   
 	   
 	 
-	 @PostMapping("/Create")
+	 @PostMapping("/create")
 		@ApiOperation(value="Create", notes="Create a Student Record", nickname="createStudent")
 	    public ResponseEntity<?> createStudent(@Valid @RequestBody CreateStudentRequest createStudentRequest,WebRequest request) throws Exception 
 	    {
-		 
-				 StudentServiceImpl studentService= new StudentServiceImpl();
-	    	//logger.info(String.format("student-service createStudent() invoked: %s for %s", createStudentRequest.getFirstName())); 
-			 Student student = new Student(createStudentRequest.getFirstName(), createStudentRequest.getLastName(), createStudentRequest.getDateOfAdmission(), StudentServiceImpl.generateRegistrationNo(),createStudentRequest.getAcademicSessions(),createStudentRequest.getStudentEmail(),createStudentRequest.getParentEmail(), UUID.randomUUID().toString());
-		      
-			 //
-			 if(studentRepository.existsByregistrationNo(student.getRegistrationNo())) {
-		            return new ResponseEntity(new ApiResponse(false, "Duplicate Registration Number!"),
-		                    HttpStatus.BAD_REQUEST);
-		        }
-
-		        if(studentRepository.existsBystudentEmail(student.getStudentEmail())) {
-		            return new ResponseEntity(new ApiResponse(false, "Student Email Address already in use!"),
-		                    HttpStatus.BAD_REQUEST);
-		        }
-
-		        AcademicSession academicSession = academicSessionRepository.findBySession(Session.AA)
-		                .orElseThrow(() -> new AppException("Session not set."));
-
-		        student.setAcademicSessions(Collections.singleton(academicSession));
-
-		        try {
-		        	
-		        	Student result = studentRepository.save(student);
-		        	
-		        	
-					URI location = ServletUriComponentsBuilder
-			                .fromCurrentContextPath().path("/v1/student/{id}")
-			                .buildAndExpand(result.getId()).toUri();
-					
-					 return ResponseEntity.created(location).body(new ApiResponse(true, "Student created successfully"+location));
-				} catch (Exception e) 
-		        {
-					logger.error("Exception raised registerUser REST Call {0}", e);
-					e.printStackTrace();
-					return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-				}      
-	    }
+		  
+		 	return studentService.createStudent(createStudentRequest);
 	 
+	    }
 	 
 }
