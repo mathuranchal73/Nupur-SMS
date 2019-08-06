@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -43,6 +44,7 @@ import com.netflix.discovery.shared.Application;
 import com.sms.model.Student;
 import com.sms.payload.ApiResponse;
 import com.sms.payload.CreateStudentRequest;
+import com.sms.payload.UpdateStudentRequest;
 import com.sms.payload.UploadBulkFileResponse;
 import com.sms.repository.StudentRepository;
 import com.sms.controller.StudentController;
@@ -77,6 +79,30 @@ public class StudentServiceImpl implements IStudentService {
 	 public Student getStudentByFirstName(String firstName) {
 	        return studentRepository.findByFirstName(firstName).orElseThrow(
 	                () -> new ResourceNotFoundException("Student", "firstName", firstName));
+	 }
+	 
+	 public ResponseEntity updateStudent(Long studentId,UpdateStudentRequest updateStudentRequest){
+		 
+		 if(studentRepository.existsById(studentId))
+		 {
+			 Date date = new Date();
+			 
+			 Student student = studentRepository.findById(studentId)
+					 .orElseThrow(() -> new ResourceNotFoundException("Student", "id", studentId));
+			 student.setFirstName(updateStudentRequest.getFirstName());
+			 student.setLastName(updateStudentRequest.getLastName());
+			 student.setUpdatedAt(date.toInstant());
+			 student.setAcademicSessions(updateStudentRequest.getAcademicSessions());
+			 student.setDoa(updateStudentRequest.getDoa());
+			 student.setEnabled(updateStudentRequest.isEnabled());
+			 
+			 studentRepository.save(student);
+			 
+			 return new ResponseEntity(new ApiResponse(true,"Student Record Updated Successfully"),
+					 HttpStatus.OK);
+		 }
+		 return new ResponseEntity(new ApiResponse(false, "Student Record Does not exist!"),
+                 HttpStatus.BAD_REQUEST);
 	 }
 	 
 	 public ResponseEntity createStudent(CreateStudentRequest createStudentRequest) {

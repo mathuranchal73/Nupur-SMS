@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 //import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +39,7 @@ import com.sms.model.Session;
 import com.sms.model.Student;
 import com.sms.payload.ApiResponse;
 import com.sms.payload.CreateStudentRequest;
+import com.sms.payload.UpdateStudentRequest;
 import com.sms.repository.AcademicSessionRepository;
 import com.sms.repository.StudentRepository;
 import com.sms.service.StudentServiceImpl;
@@ -98,9 +100,15 @@ public class StudentController {
 		@ApiOperation(value="Create", notes="Create a Student Record", nickname="createStudent")
 	    public ResponseEntity<?> createStudent(@Valid @RequestBody CreateStudentRequest createStudentRequest,WebRequest request) throws Exception 
 	    {
-		  
 		 	return studentService.createStudent(createStudentRequest);
-	 
 	    }
+	 
+	 @PutMapping("/update/{id}")
+	 @ApiOperation(value="Update", notes="Update a Student Record", nickname="updateStudent")
+	 public ResponseEntity<?> updateStudent(@PathVariable(value="id") Long studentId,@Valid @RequestBody UpdateStudentRequest updateStudentRequest, WebRequest request) throws Exception
+	 {
+		 return studentService.updateStudent(studentId,updateStudentRequest);
+	 }
+	 
 	 
 }
