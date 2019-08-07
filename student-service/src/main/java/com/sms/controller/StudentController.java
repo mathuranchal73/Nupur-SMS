@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 //import org.springframework.kafka.core.KafkaTemplate;
@@ -109,6 +110,12 @@ public class StudentController {
 	 {
 		 return studentService.updateStudent(studentId,updateStudentRequest);
 	 }
+	 
+	 @DeleteMapping("/{studentId}")
+	 @ApiOperation(value="Delete", notes="Delete a Student Record", nickname="deleteStudent")
+	 public ResponseEntity<?> deleteStudentById(@PathVariable Long studentId) {
+		 	return studentService.deleteStudentById(studentId);
+	 	}
 	 
 	 
 }

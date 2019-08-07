@@ -75,6 +75,26 @@ public class StudentServiceImpl implements IStudentService {
 	        return studentRepository.findById(studentId).orElseThrow(
 	                () -> new ResourceNotFoundException("Student", "id", studentId));
 	 }
+	 
+	 public ResponseEntity deleteStudentById(Long studentId) {
+		 if(studentRepository.existsById(studentId))
+		 {
+		 try {
+			studentRepository.deleteById(studentId);
+			return new ResponseEntity(new ApiResponse(true, "Student Record Deleted Successfully!"),
+	                 HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity(new ApiResponse(false, "Exception Encountered in deleting Student"),
+	                 HttpStatus.INTERNAL_SERVER_ERROR);
+						
+						
+		}
+		 
+		 }
+		 
+		 return new ResponseEntity(new ApiResponse(false, "Student Record Does not exist!"),
+                 HttpStatus.BAD_REQUEST);
+	 }
 
 	 public Student getStudentByFirstName(String firstName) {
 	        return studentRepository.findByFirstName(firstName).orElseThrow(
