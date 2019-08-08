@@ -1,7 +1,9 @@
 FROM openjdk:8-jdk-alpine
-VOLUME /tmp
-ARG DEPENDENCY=target/dependency
-COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY ${DEPENDENCY}/META-INF /app/META-INF
-COPY ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","hello.Application"]
+
+COPY ./target/student-service-0.0.1.jar /usr/app/
+
+WORKDIR /usr/app/
+
+RUN sh -c 'touch student-service-0.0.1.jar'
+
+ENTRYPOINT ["java","-jar","student-service-0.0.1.jar"]
