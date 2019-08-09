@@ -18,9 +18,12 @@ public class StudentServiceApplication {
 	}
 	
 
-	@Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.build();
-    }
+	 @Bean
+	    public RestTemplate restTemplate() {
+
+	       RestTemplateBuilder builder=new RestTemplateBuilder();
+
+	        return builder.build();
+	    }
 
 }
