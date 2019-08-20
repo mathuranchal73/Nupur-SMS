@@ -76,11 +76,6 @@ public class StudentController {
 		 	return studentService.getStudentById(studentId);
 	 	}
 	 
-	 @GetMapping("/{firstName}")
-	 public Student getStudentByFirstName(@PathVariable String firstName) {
-		 	return studentService.getStudentByFirstName(firstName);
-	 	}
-	 
 	 	
 	 @PostMapping("/bulkUpload")
 		@ApiOperation(value="Upload the file", notes="Uploads a Multipart File and returns the download URI",produces = "application/json", nickname="uploadFile")
