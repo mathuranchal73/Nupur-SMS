@@ -14,7 +14,7 @@ public class UpdateStudentRequest {
 	
 	private String academicSessions;
 	
-	private String username;
+	private String rollNumber;
 	
 	private String doa;
 	
@@ -68,12 +68,14 @@ public class UpdateStudentRequest {
 		this.academicSessions = academicSessions;
 	}
 
-	public String getUsername() {
-		return username;
+	
+
+	public String getRollNumber() {
+		return rollNumber;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setRollNumber(String rollNumber) {
+		this.rollNumber = rollNumber;
 	}
 
 	public String getDoa() {

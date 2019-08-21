@@ -58,7 +58,7 @@ public class Student extends DateAudit {
 	private String registrationNo;
 	
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
-	private Long rollNo;
+	private String rollNo;
 	
 	private String academicSessions;
 	
@@ -150,12 +150,12 @@ public class Student extends DateAudit {
 		this.registrationNo = registrationNo;
 	}
 
-	public Long getRollNo() {
+	public String getRollNo() {
 		return rollNo;
 	}
 
-	public void setRollNo(Long rollNo) {
-		this.rollNo = rollNo;
+	public void setRollNo(String string) {
+		this.rollNo = string;
 	}
 
 	public String getAcademicSessions() {

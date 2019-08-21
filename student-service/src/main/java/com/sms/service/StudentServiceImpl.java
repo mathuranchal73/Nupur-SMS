@@ -115,6 +115,7 @@ public class StudentServiceImpl implements IStudentService {
 			 student.setAcademicSessions(updateStudentRequest.getAcademicSessions());
 			 student.setDoa(updateStudentRequest.getDoa());
 			 student.setEnabled(updateStudentRequest.isEnabled());
+			 student.setRollNo(updateStudentRequest.getRollNumber());
 			 
 			 studentRepository.save(student);
 			 
@@ -215,10 +216,10 @@ public class StudentServiceImpl implements IStudentService {
 	 }
 	  
 	  
-	  		public Long generateRollNo() {
+	  		public String generateRollNo() {
 			 
-			 Random generator= new Random();					 
-			 return  generator.nextLong();
+			 Random generator= new Random();			 
+			 return Integer.toString(generator.nextInt());
 		 }
 
 
