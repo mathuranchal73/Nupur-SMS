@@ -76,6 +76,22 @@ public class StudentServiceImpl implements IStudentService {
 	                () -> new ResourceNotFoundException("Student", "id", studentId));
 	 }
 	 
+	 public Long getStudentCount() {
+	        return studentRepository.getStudentCount();
+	 }
+	 
+	 public Long getActiveStudentCount() {
+	        return studentRepository.getTotalActiveStudentCount();
+	 }
+	 
+	 public Long getTotalActiveStudentsByAcademicSession(String academicSession) {
+		 return studentRepository.getTotalActiveStudentCountByAcademicSession(academicSession);
+	 }
+	 
+	 public Long getTotalActiveStudentsByDoa(String doa) {
+		 return studentRepository.getTotalActiveStudentCountByDoa(doa);
+	 }
+	 
 	 public ResponseEntity deleteStudentById(Long studentId) {
 		 if(studentRepository.existsById(studentId))
 		 {

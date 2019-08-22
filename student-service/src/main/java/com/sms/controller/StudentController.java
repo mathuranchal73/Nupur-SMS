@@ -76,6 +76,29 @@ public class StudentController {
 	 public Student getStudentById(@PathVariable Long studentId) {
 		 	return studentService.getStudentById(studentId);
 	 	}
+	 @GetMapping("/getStudentCount")
+	 @ApiOperation(value="Gets the total count of Student Records", notes="Gets the total count of Student Records",produces = "application/json", nickname="getStudentCount")
+	 public Long getStudentCount() {
+		 	return studentService.getStudentCount();
+	 	}
+	 
+	 @GetMapping("/getActiveStudentCount")
+	 @ApiOperation(value="Gets the total count of Active Student Records", notes="Gets the total count of Active Student Records",produces = "application/json", nickname="getActiveStudentCount")
+	 public Long getActiveStudentCount() {
+		 	return studentService.getActiveStudentCount();
+	 	}
+	 
+	 @GetMapping("/getActiveStudentCountByAcademicSession/{academicSession}")
+	 @ApiOperation(value="Gets the total count of Active Student Records by Academic Session Provided", notes="Gets the total count of Active Student Records by Academic Session provided",produces = "application/json", nickname="getActiveStudentCountByAcademicSession")
+	 public Long getActiveStudentCountByAcademicSession(@PathVariable String academicSession) {
+		 	return studentService.getTotalActiveStudentsByAcademicSession(academicSession);
+	 	}
+
+	 @GetMapping("/getActiveStudentCountByDateOfAdmission/{dateOfAdmission}")
+	 @ApiOperation(value="Gets the total count of Active Student Records by Date of Admission provided", notes="Gets the total count of Active Student Records by Date of Admission provided",produces = "application/json", nickname="getActiveStudentCountByDateOfAdmission")
+	 public Long getActiveStudentCountByDateOfAdmission(@PathVariable String dateOfAdmission) {
+		 	return studentService.getTotalActiveStudentsByAcademicSession(dateOfAdmission);
+	 	}
 	 
 	 	
 	 @PostMapping("/bulkUpload")
